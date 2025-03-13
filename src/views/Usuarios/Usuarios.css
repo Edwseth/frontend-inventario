@@ -1,0 +1,77 @@
+/* src/views/Usuarios/Usuarios.css */
+.usuarios-container {
+    padding: 20px;
+  }
+  
+  .usuarios-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .subfunciones {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .subfuncion {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .subfuncion.active {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  .subfuncion img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .subfuncion p {
+    margin: 5px 0 0;
+  }
+  
+  .contenido-subfuncion {
+    margin-top: 20px;
+  }
+  
+  .lista-usuarios table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .lista-usuarios th,
+  .lista-usuarios td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .lista-usuarios th {
+    background-color: #f4f4f4;
+  }
+  
+  .lista-usuarios button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .lista-usuarios button:hover {
+    background-color: #16a085;
+  }
+  
+  .formulario-accion {
+    text-align: center;
+  }

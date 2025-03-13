@@ -1,0 +1,99 @@
+/* src/views/Registro/LoginUsuarios.css */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  background-color: #f4f4f4; /* Color de fondo */
+}
+
+.login-logo {
+  width: 150px; /* Tamaño del logo del laboratorio */
+  margin-bottom: 20px;
+}
+
+.login-window {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 300px; /* Ancho de la ventana de login */
+}
+
+.login-window h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: center; /* Centrar el texto de las etiquetas */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.form-group input {
+  width: 90%; /* Ancho del campo de entrada */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 0 auto; /* Centrar el campo de entrada */
+  display: block; /* Asegurar que el input ocupe toda la línea */
+}
+
+.login-button {
+  width: 90%; /* Ancho del botón */
+  padding: 10px;
+  background-color: #1abc9c; /* Color del botón */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0 auto; /* Centrar el botón */
+  display: block; /* Asegurar que el botón ocupe toda la línea */
+}
+
+.login-button:hover {
+  background-color: #16a085; /* Color del botón al pasar el mouse */
+}
+
+.login-footer {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.footer-logo {
+  width: 30px; /* Tamaño del logo de tu emprendimiento */
+}
+
+.login-footer p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.form-group input::placeholder {
+  color: #999; /* Color del placeholder */
+  font-style: italic; /* Estilo de la fuente */
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}

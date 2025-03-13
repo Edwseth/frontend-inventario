@@ -1,0 +1,17 @@
+/* src/components/common/BrandWatermark.css */
+.brand-watermark {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.brand-watermark img {
+  width: 150px; /* Tamaño del logo */
+  height: auto;
+}
+
+.brand-watermark.watermark img {
+  opacity: 0.1; /* Opacidad para la marca de agua */
+}

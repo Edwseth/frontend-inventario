@@ -1,0 +1,117 @@
+/* src/views/Proveedores/Proveedores.css */
+.proveedores-container {
+    padding: 20px;
+  }
+  
+  .proveedores-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .subfunciones {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .subfuncion {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .subfuncion.active {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  .subfuncion img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .subfuncion p {
+    margin: 5px 0 0;
+  }
+  
+  .contenido-subfuncion {
+    margin-top: 20px;
+  }
+  
+  .lista-proveedores table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .lista-proveedores th,
+  .lista-proveedores td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .lista-proveedores th {
+    background-color: #f4f4f4;
+  }
+  
+  .lista-proveedores button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .lista-proveedores button:hover {
+    background-color: #16a085;
+  }
+  
+  .formulario-proveedor {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .formulario-proveedor h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .formulario-proveedor .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .formulario-proveedor label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .formulario-proveedor input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .formulario-proveedor .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .formulario-proveedor .submit-button:hover {
+    background-color: #16a085;
+  }

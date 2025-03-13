@@ -1,0 +1,180 @@
+/* src/views/Productos/Productos.css */
+.productos-container {
+    padding: 20px;
+  }
+  
+  .productos-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .subfunciones {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .subfuncion {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .subfuncion.active {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  .subfuncion img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .subfuncion p {
+    margin: 5px 0 0;
+  }
+  
+  .contenido-subfuncion {
+    margin-top: 20px;
+  }
+  
+  .lista-productos table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .lista-productos th,
+  .lista-productos td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .lista-productos th {
+    background-color: #f4f4f4;
+  }
+  
+  .lista-productos button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .lista-productos button:hover {
+    background-color: #16a085;
+  }
+  
+  .formulario-producto {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .formulario-producto h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .formulario-producto .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .formulario-producto label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .formulario-producto input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .formulario-producto .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .formulario-producto .submit-button:hover {
+    background-color: #16a085;
+  }
+  
+  .buscar-producto,
+  .verificar-disponibilidad {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .buscar-producto h2,
+  .verificar-disponibilidad h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .buscar-producto .form-group,
+  .verificar-disponibilidad .form-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .buscar-producto input,
+  .verificar-disponibilidad input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .buscar-producto button,
+  .verificar-disponibilidad button {
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buscar-producto button:hover,
+  .verificar-disponibilidad button:hover {
+    background-color: #16a085;
+  }
+  
+  .producto-encontrado {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .producto-encontrado h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .producto-encontrado p {
+    margin: 5px 0;
+    color: #555;
+  }

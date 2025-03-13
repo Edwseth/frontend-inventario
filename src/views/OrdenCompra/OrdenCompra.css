@@ -1,0 +1,335 @@
+/* src/views/OrdenesCompra/OrdenesCompra.css */
+.ordenes-compra-container {
+    padding: 20px;
+  }
+  
+  .ordenes-compra-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .subfunciones {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .subfuncion {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .subfuncion.active {
+    background-color: #1abc9c;
+    color: white;
+  }
+  
+  .subfuncion img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .subfuncion p {
+    margin: 5px 0 0;
+  }
+  
+  .contenido-subfuncion {
+    margin-top: 20px;
+  }
+  
+  .lista-ordenes-compra table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .lista-ordenes-compra th,
+  .lista-ordenes-compra td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .lista-ordenes-compra th {
+    background-color: #f4f4f4;
+  }
+  
+  .lista-ordenes-compra button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .lista-ordenes-compra button:hover {
+    background-color: #16a085;
+  }
+  
+  .formulario-orden-compra {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .formulario-orden-compra h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .formulario-orden-compra .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .formulario-orden-compra label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .formulario-orden-compra input,
+  .formulario-orden-compra select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .detalles {
+    margin-top: 20px;
+  }
+  
+  .detalle {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .detalle .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .detalle button {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .detalle button:hover {
+    background-color: #c0392b;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #16a085;
+  }
+  
+  .buscar-orden-compra,
+  .modificar-estado {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .buscar-orden-compra h2,
+  .modificar-estado h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .buscar-orden-compra .form-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .buscar-orden-compra input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .buscar-orden-compra button {
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buscar-orden-compra button:hover {
+    background-color: #16a085;
+  }
+  
+  .orden-encontrada {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .orden-encontrada h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .orden-encontrada p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .modificar-estado select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  /* Corrección para iconos faltantes */
+.subfuncion img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain; /* Asegura que los iconos mantengan su relación de aspecto */
+  padding: 5px; /* Espaciado interno para mejor visualización */
+}
+
+/* Mejora en la visualización de errores */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  margin: 20px 0;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Optimización para formularios */
+.formulario-orden-compra .detalle {
+  background-color: #f8f9fa;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Mejor disposición de elementos en detalles */
+.detalle .form-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Estilos para botones de acciones */
+.acciones-orden {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Ajustes para responsive design */
+@media (max-width: 768px) {
+  .subfunciones {
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+  
+  .subfuncion {
+      flex: 1 1 150px;
+      padding: 8px;
+  }
+  
+  .lista-ordenes-compra table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+}
+
+/* Corrección para alineación de botón submit */
+.submit-button {
+  margin-top: 20px;
+  width: auto;
+  padding: 12px 30px;
+  font-weight: bold;
+}
+
+/* Mejor visualización de estados */
+.estado-orden {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.estado-pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.estado-completado {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Optimización para tarjetas de órdenes */
+.orden-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.controles-detalles {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.agregar-detalle {
+  background-color: #3498db !important;
+}
+
+.eliminar-detalle {
+  margin-top: 10px;
+  width: auto;
+  padding: 8px 15px;
+}
+
+.submit-button {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+}

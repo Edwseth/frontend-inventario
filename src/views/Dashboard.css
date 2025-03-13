@@ -1,0 +1,13 @@
+/* src/views/Dashboard.css */
+.dashboard-layout {
+    display: flex;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+  }
+  
+  .content-area {
+    flex: 1; /* Ocupa el espacio restante */
+    padding: 20px;
+    background-color: #f4f4f4; /* Color de fondo del área de contenido */
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté sobre la marca de agua */
+  }
