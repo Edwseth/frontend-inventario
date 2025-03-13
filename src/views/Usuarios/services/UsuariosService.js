@@ -11,36 +11,38 @@ const listarUsuarios = async () => {
   }
 };
 
-const bloquearUsuario = async (id) => {
+const bloquearUsuario = async (username) => {
   try {
-    await axios.put(`/api/usuarios/${id}/block`);
+    await axios.put(`/api/usuarios/${username}/block`);
   } catch (error) {
     console.error('Error al bloquear usuario:', error);
     throw error;
   }
 };
 
-const habilitarUsuario = async (id) => {
+const habilitarUsuario = async (username) => {
   try {
-    await axios.put(`/api/usuarios/${id}/enable`);
+    await axios.put(`/api/usuarios/${username}/enable`);
   } catch (error) {
     console.error('Error al habilitar usuario:', error);
     throw error;
   }
 };
 
-const deshabilitarUsuario = async (id) => {
+const deshabilitarUsuario = async (username) => {
   try {
-    await axios.put(`/api/usuarios/${id}/disable`);
+    await axios.put(`/api/usuarios/${username}/disable`);
   } catch (error) {
     console.error('Error al deshabilitar usuario:', error);
     throw error;
   }
 };
 
-export default {
+const UsuariosService = {
   listarUsuarios,
   bloquearUsuario,
   habilitarUsuario,
   deshabilitarUsuario,
 };
+
+export default UsuariosService;

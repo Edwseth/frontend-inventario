@@ -8,10 +8,11 @@ import deshabilitarIcon from '../../assets/icons/deshabilitar.png';
 import './Usuarios.css';
 
 const Usuarios = () => {
-  const [usuarios, setUsuarios] = useState([]);
-  const [accion, setAccion] = useState(null);
+  const [usuarios, setUsuarios] = useState([]); // Lista de usuarios
+  const [accion, setAccion] = useState(null); // Subfunción seleccionada (inicialmente null)
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null); // Usuario seleccionado para acciones
 
-  // Cargar la lista de usuarios al montar el componente
+  // Cargar la lista de usuarios solo cuando se seleccione "listar"
   useEffect(() => {
     if (accion === 'listar') {
       cargarUsuarios();
@@ -22,33 +23,55 @@ const Usuarios = () => {
     try {
       const usuarios = await usuariosService.listarUsuarios();
       setUsuarios(usuarios);
+      console.log('Lista de usuarios cargada:', usuarios); // Log para depuración
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
     }
   };
 
-  const handleBloquearUsuario = async (id) => {
+  const handleBloquearUsuario = async () => {
+    if (!usuarioSeleccionado) {
+      alert('Por favor, selecciona un usuario');
+      return;
+    }
+
     try {
-      await usuariosService.bloquearUsuario(id);
-      cargarUsuarios(); // Recargar la lista de usuarios
+      await usuariosService.bloquearUsuario(usuarioSeleccionado.username);
+      cargarUsuarios();
+      setUsuarioSeleccionado(null);
+      alert('Usuario bloqueado exitosamente');
     } catch (error) {
       console.error('Error al bloquear usuario:', error);
     }
   };
 
-  const handleHabilitarUsuario = async (id) => {
+  const handleHabilitarUsuario = async () => {
+    if (!usuarioSeleccionado) {
+      alert('Por favor, selecciona un usuario');
+      return;
+    }
+
     try {
-      await usuariosService.habilitarUsuario(id);
-      cargarUsuarios(); // Recargar la lista de usuarios
+      await usuariosService.habilitarUsuario(usuarioSeleccionado.username);
+      cargarUsuarios();
+      setUsuarioSeleccionado(null);
+      alert('Usuario habilitado exitosamente');
     } catch (error) {
       console.error('Error al habilitar usuario:', error);
     }
   };
 
-  const handleDeshabilitarUsuario = async (id) => {
+  const handleDeshabilitarUsuario = async () => {
+    if (!usuarioSeleccionado) {
+      alert('Por favor, selecciona un usuario');
+      return;
+    }
+
     try {
-      await usuariosService.deshabilitarUsuario(id);
-      cargarUsuarios(); // Recargar la lista de usuarios
+      await usuariosService.deshabilitarUsuario(usuarioSeleccionado.username);
+      cargarUsuarios();
+      setUsuarioSeleccionado(null);
+      alert('Usuario deshabilitado exitosamente');
     } catch (error) {
       console.error('Error al deshabilitar usuario:', error);
     }
@@ -109,7 +132,6 @@ const Usuarios = () => {
                   <th>Nombre de Usuario</th>
                   <th>Correo Electrónico</th>
                   <th>Rol</th>
-                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -119,11 +141,6 @@ const Usuarios = () => {
                     <td>{usuario.username}</td>
                     <td>{usuario.email}</td>
                     <td>{usuario.role}</td>
-                    <td>
-                      <button onClick={() => handleBloquearUsuario(usuario.id)}>Bloquear</button>
-                      <button onClick={() => handleHabilitarUsuario(usuario.id)}>Habilitar</button>
-                      <button onClick={() => handleDeshabilitarUsuario(usuario.id)}>Deshabilitar</button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -134,21 +151,72 @@ const Usuarios = () => {
         {accion === 'bloquear' && (
           <div className="formulario-accion">
             <h2>Bloquear Usuario</h2>
-            <p>Selecciona un usuario de la lista para bloquearlo.</p>
+            <select
+              value={usuarioSeleccionado ? usuarioSeleccionado.username : ''}
+              onChange={(e) => {
+                const username = e.target.value;
+                console.log('Usuario seleccionado (username):', username); // Log para depuración
+                const usuario = usuarios.find((u) => u.username === username);
+                console.log('Usuario encontrado:', usuario); // Log para depuración
+                setUsuarioSeleccionado(usuario);
+              }}
+            >
+              <option value="">Selecciona un usuario</option>
+              {usuarios.map((usuario) => (
+                <option key={usuario.username} value={usuario.username}>
+                  {usuario.username}
+                </option>
+              ))}
+            </select>
+            <button onClick={handleBloquearUsuario}>Bloquear</button>
           </div>
         )}
 
         {accion === 'habilitar' && (
           <div className="formulario-accion">
             <h2>Habilitar Usuario</h2>
-            <p>Selecciona un usuario de la lista para habilitarlo.</p>
+            <select
+              value={usuarioSeleccionado ? usuarioSeleccionado.username : ''}
+              onChange={(e) => {
+                const username = e.target.value;
+                console.log('Usuario seleccionado (username):', username); // Log para depuración
+                const usuario = usuarios.find((u) => u.username === username);
+                console.log('Usuario encontrado:', usuario); // Log para depuración
+                setUsuarioSeleccionado(usuario);
+              }}
+            >
+              <option value="">Selecciona un usuario</option>
+              {usuarios.map((usuario) => (
+                <option key={usuario.username} value={usuario.username}>
+                  {usuario.username}
+                </option>
+              ))}
+            </select>
+            <button onClick={handleHabilitarUsuario}>Habilitar</button>
           </div>
         )}
 
         {accion === 'deshabilitar' && (
           <div className="formulario-accion">
             <h2>Deshabilitar Usuario</h2>
-            <p>Selecciona un usuario de la lista para deshabilitarlo.</p>
+            <select
+              value={usuarioSeleccionado ? usuarioSeleccionado.username : ''}
+              onChange={(e) => {
+                const username = e.target.value;
+                console.log('Usuario seleccionado (username):', username); // Log para depuración
+                const usuario = usuarios.find((u) => u.username === username);
+                console.log('Usuario encontrado:', usuario); // Log para depuración
+                setUsuarioSeleccionado(usuario);
+              }}
+            >
+              <option value="">Selecciona un usuario</option>
+              {usuarios.map((usuario) => (
+                <option key={usuario.username} value={usuario.username}>
+                  {usuario.username}
+                </option>
+              ))}
+            </select>
+            <button onClick={handleDeshabilitarUsuario}>Deshabilitar</button>
           </div>
         )}
       </div>

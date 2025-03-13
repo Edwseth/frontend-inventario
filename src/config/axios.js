@@ -12,9 +12,12 @@ const instance = axios.create({
 // 🛠️ Interceptor para incluir el token en las solicitudes
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken');
-  if (token) {
+
+  // No agregar el token a la solicitud de inicio de sesión
+  if (token && !config.url.includes('/auth/login')) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 

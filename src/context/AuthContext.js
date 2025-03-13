@@ -29,7 +29,12 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     try {
       // Guardar el usuario en localStorage como JSON
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('user', JSON.stringify({
+        username: userData.username,
+        token: userData.token,
+        role: userData.role, // Asegúrate de incluir el rol
+        email: userData.email, // Asegúrate de incluir el email si es necesario
+      }));
       setUser(userData);
     } catch (error) {
       console.error('Error al guardar el usuario en localStorage:', error);
