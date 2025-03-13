@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// Crear una instancia de Axios con una configuración base
 const instance = axios.create({
-  baseURL: 'http://localhost:8080', // URL base del backend
+  baseURL: 'http://localhost:8080', // Cambia esto según tu backend
+  timeout: 10000, // Tiempo de espera para las solicitudes
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // 🛠️ Interceptor para incluir el token en las solicitudes

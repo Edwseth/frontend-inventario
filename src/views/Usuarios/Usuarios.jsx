@@ -1,15 +1,15 @@
 // src/views/Usuarios/Usuarios.jsx
 import React, { useState, useEffect } from 'react';
-import axios from '../../config/axios'; // Importar la instancia configurada
-import listarIcon from '../../assets/icons/listar.png'; // Ícono de listar
-import bloquearIcon from '../../assets/icons/bloquear.png'; // Ícono de bloquear
-import habilitarIcon from '../../assets/icons/habilitar.png'; // Ícono de habilitar
-import deshabilitarIcon from '../../assets/icons/deshabilitar.png'; // Ícono de deshabilitar
-import './Usuarios.css'; // Estilos para la vista de usuarios
+import usuariosService from './services/UsuariosService';
+import listarIcon from '../../assets/icons/listar.png';
+import bloquearIcon from '../../assets/icons/bloquear.png';
+import habilitarIcon from '../../assets/icons/habilitar.png';
+import deshabilitarIcon from '../../assets/icons/deshabilitar.png';
+import './Usuarios.css';
 
 const Usuarios = () => {
-  const [usuarios, setUsuarios] = useState([]); // Lista de usuarios
-  const [accion, setAccion] = useState('listar'); // Subfunción seleccionada
+  const [usuarios, setUsuarios] = useState([]);
+  const [accion, setAccion] = useState(null);
 
   // Cargar la lista de usuarios al montar el componente
   useEffect(() => {
@@ -20,8 +20,8 @@ const Usuarios = () => {
 
   const cargarUsuarios = async () => {
     try {
-      const response = await axios.get('/api/usuarios');
-      setUsuarios(response.data);
+      const usuarios = await usuariosService.listarUsuarios();
+      setUsuarios(usuarios);
     } catch (error) {
       console.error('Error al cargar usuarios:', error);
     }
@@ -29,7 +29,7 @@ const Usuarios = () => {
 
   const handleBloquearUsuario = async (id) => {
     try {
-      await axios.put(`/api/usuarios/${id}/bloquear`);
+      await usuariosService.bloquearUsuario(id);
       cargarUsuarios(); // Recargar la lista de usuarios
     } catch (error) {
       console.error('Error al bloquear usuario:', error);
@@ -38,7 +38,7 @@ const Usuarios = () => {
 
   const handleHabilitarUsuario = async (id) => {
     try {
-      await axios.put(`/api/usuarios/${id}/habilitar`);
+      await usuariosService.habilitarUsuario(id);
       cargarUsuarios(); // Recargar la lista de usuarios
     } catch (error) {
       console.error('Error al habilitar usuario:', error);
@@ -47,7 +47,7 @@ const Usuarios = () => {
 
   const handleDeshabilitarUsuario = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/usuarios/${id}/deshabilitar`);
+      await usuariosService.deshabilitarUsuario(id);
       cargarUsuarios(); // Recargar la lista de usuarios
     } catch (error) {
       console.error('Error al deshabilitar usuario:', error);
@@ -92,6 +92,13 @@ const Usuarios = () => {
 
       {/* Contenido de la subfunción seleccionada */}
       <div className="contenido-subfuncion">
+        {accion === null && (
+          <div className="mensaje-inicial">
+            <h2>Bienvenido a la Gestión de Usuarios</h2>
+            <p>Selecciona una acción para comenzar.</p>
+          </div>
+        )}
+
         {accion === 'listar' && (
           <div className="lista-usuarios">
             <h2>Lista de Usuarios</h2>
