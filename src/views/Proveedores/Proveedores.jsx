@@ -1,57 +1,104 @@
 // src/views/Proveedores/Proveedores.jsx
-import React, { useState, useEffect } from 'react';
-import axios from '../../config/axios'; // Importar la instancia configurada
-import adicionarIcon from '../../assets/icons/adicionar.png'; // Ícono de adicionar
-import listarIcon from '../../assets/icons/listar.png'; // Ícono de listar
-import actualizarIcon from '../../assets/icons/actualizar.png'; // Ícono de actualizar
-import bloquearIcon from '../../assets/icons/bloquear.png'; // Ícono de bloquear
-import './Proveedores.css'; // Estilos para la vista de proveedores
+import React, { useState, useEffect, useCallback } from "react";
+import ActualizarProveedor from "./ActualizarProveedor";
+import BloquearProveedor from "./BloquearProveedor";
+import CrearProveedor from "./CrearProveedor";
+import { obtenerProveedores } from "../../services/proveedoresService";
+import axios from "../../config/axios";
+import adicionarIcon from "../../assets/icons/adicionar.png";
+import listarIcon from "../../assets/icons/listar.png";
+import actualizarIcon from "../../assets/icons/actualizar.png";
+import bloquearIcon from "../../assets/icons/bloquear.png";
+import "./Proveedores.css";
+
+const acciones = [
+  { key: "crear", icon: adicionarIcon, label: "Crear Proveedor" },
+  { key: "listar", icon: listarIcon, label: "Listar Proveedores" },
+  { key: "actualizar", icon: actualizarIcon, label: "Actualizar Proveedor" },
+  { key: "bloquear", icon: bloquearIcon, label: "Bloquear Proveedor" },
+];
 
 const Proveedores = () => {
-  const [proveedores, setProveedores] = useState([]); // Lista de proveedores
-  const [accion, setAccion] = useState('listar'); // Subfunción seleccionada
-  const [proveedorSeleccionado, setProveedorSeleccionado] = useState(null); // Proveedor seleccionado para actualizar
+  const [proveedorSeleccionado, setProveedorSeleccionado] = useState(null);
+  const [proveedores, setProveedores] = useState([]);
+  const [accion, setAccion] = useState("");
 
-  // Cargar la lista de proveedores al montar el componente
+  const cargarProveedores = useCallback(async () => {
+    try {
+      const response = await obtenerProveedores();
+      const proveedoresNormalizados = response.data.map((proveedor) => ({
+        ...proveedor,
+        activo: !proveedor.bloqueado, // Inferir el estado "activo" desde el campo "bloqueado"
+      }));
+      console.log("Proveedores normalizados:", proveedoresNormalizados); // Verifica los datos normalizados
+      setProveedores(proveedoresNormalizados);
+    } catch (error) {
+      console.error("Error al cargar proveedores:", error);
+    }
+  }, []);
+
   useEffect(() => {
-    if (accion === 'listar') {
+    console.log("Acción actual:", accion);
+    if (accion === "listar") {
       cargarProveedores();
     }
-  }, [accion]);
-
-  const cargarProveedores = async () => {
-    try {
-      const response = await axios.get('/api/proveedores');
-      setProveedores(response.data);
-    } catch (error) {
-      console.error('Error al cargar proveedores:', error);
-    }
-  };
-
-  const handleCrearProveedor = async (formData) => {
-    try {
-      await axios.post('/api/proveedores', formData);
-      cargarProveedores(); // Recargar la lista de proveedores
-    } catch (error) {
-      console.error('Error al crear proveedor:', error);
-    }
-  };
-
-  const handleActualizarProveedor = async (id, formData) => {
-    try {
-      await axios.put(`/api/proveedores/${id}`, formData);
-      cargarProveedores(); // Recargar la lista de proveedores
-    } catch (error) {
-      console.error('Error al actualizar proveedor:', error);
-    }
-  };
+  }, [accion, cargarProveedores]);
 
   const handleBloquearProveedor = async (id) => {
     try {
       await axios.put(`/api/proveedores/${id}/bloquear`);
-      cargarProveedores(); // Recargar la lista de proveedores
+      cargarProveedores();
     } catch (error) {
-      console.error('Error al bloquear proveedor:', error);
+      console.error("Error al bloquear proveedor:", error);
+    }
+  };
+
+  const handleSeleccionAccion = (key) => {
+    console.log("Acción seleccionada:", key);
+    setAccion(key);
+  };
+
+  const renderContenido = () => {
+    console.log("Renderizando contenido para acción:", accion);
+
+    switch (accion) {
+      case "crear":
+        return <CrearProveedor cargarProveedores={cargarProveedores} />;
+      case "actualizar":
+        return (
+          <ActualizarProveedor
+            proveedorSeleccionado={proveedorSeleccionado}
+            setProveedorSeleccionado={setProveedorSeleccionado}
+            proveedores={proveedores}
+            setProveedores={setProveedores}
+          />
+        );
+      case "bloquear":
+        return (
+          <BloquearProveedor
+            proveedorSeleccionado={proveedorSeleccionado}
+            setProveedorSeleccionado={setProveedorSeleccionado}
+            proveedores={proveedores}
+            setProveedores={setProveedores}
+            cargarProveedores={cargarProveedores}
+          />
+        );
+      case "listar":
+        return (
+          <ListaProveedores
+            proveedores={proveedores}
+            setProveedorSeleccionado={setProveedorSeleccionado}
+            setAccion={setAccion}
+            handleBloquearProveedor={handleBloquearProveedor}
+          />
+        );
+      default:
+        return (
+          <div className="mensaje-inicial">
+            <h2>Bienvenido a la Gestión de Proveedores</h2>
+            <p>Selecciona una acción para comenzar.</p>
+          </div>
+        );
     }
   };
 
@@ -61,188 +108,63 @@ const Proveedores = () => {
 
       {/* Subfunciones */}
       <div className="subfunciones">
-        <div
-          className={`subfuncion ${accion === 'crear' ? 'active' : ''}`}
-          onClick={() => setAccion('crear')}
-        >
-          <img src={adicionarIcon} alt="Crear Proveedor" />
-          <p>Crear Proveedor</p>
-        </div>
-        <div
-          className={`subfuncion ${accion === 'listar' ? 'active' : ''}`}
-          onClick={() => setAccion('listar')}
-        >
-          <img src={listarIcon} alt="Listar Proveedores" />
-          <p>Listar Proveedores</p>
-        </div>
-        <div
-          className={`subfuncion ${accion === 'actualizar' ? 'active' : ''}`}
-          onClick={() => setAccion('actualizar')}
-        >
-          <img src={actualizarIcon} alt="Actualizar Proveedor" />
-          <p>Actualizar Proveedor</p>
-        </div>
-        <div
-          className={`subfuncion ${accion === 'bloquear' ? 'active' : ''}`}
-          onClick={() => setAccion('bloquear')}
-        >
-          <img src={bloquearIcon} alt="Bloquear Proveedor" />
-          <p>Bloquear Proveedor</p>
-        </div>
+        {acciones.map(({ key, icon, label }) => (
+          <div
+            key={key}
+            className={`subfuncion ${accion === key ? "active" : ""}`}
+            onClick={() => handleSeleccionAccion(key)}
+          >
+            <img src={icon} alt={label} onError={() => console.error(`Error cargando ${label}`)} />
+            <p>{label}</p>
+          </div>
+        ))}
       </div>
 
-      {/* Contenido de la subfunción seleccionada */}
-      <div className="contenido-subfuncion">
-        {accion === 'crear' && (
-          <FormularioProveedor
-            onSubmit={handleCrearProveedor}
-            titulo="Crear Proveedor"
-          />
-        )}
-
-        {accion === 'listar' && (
-          <div className="lista-proveedores">
-            <h2>Lista de Proveedores</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Email</th>
-                  <th>NIT/Cédula</th>
-                  <th>Nombre de Contacto</th>
-                  <th>Página Web</th>
-                  <th>Teléfono de Contacto</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {proveedores.map((proveedor) => (
-                  <tr key={proveedor.id}>
-                    <td>{proveedor.id}</td>
-                    <td>{proveedor.email}</td>
-                    <td>{proveedor.nit}</td>
-                    <td>{proveedor.nombreContacto}</td>
-                    <td>{proveedor.paginaWeb}</td>
-                    <td>{proveedor.telefonoContacto}</td>
-                    <td>
-                      <button onClick={() => {
-                        setProveedorSeleccionado(proveedor);
-                        setAccion('actualizar');
-                      }}>
-                        Actualizar
-                      </button>
-                      <button onClick={() => handleBloquearProveedor(proveedor.id)}>
-                        Bloquear
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {accion === 'actualizar' && proveedorSeleccionado && (
-          <FormularioProveedor
-            onSubmit={(formData) => handleActualizarProveedor(proveedorSeleccionado.id, formData)}
-            titulo="Actualizar Proveedor"
-            datosIniciales={proveedorSeleccionado}
-          />
-        )}
-
-        {accion === 'bloquear' && (
-          <div className="formulario-accion">
-            <h2>Bloquear Proveedor</h2>
-            <p>Selecciona un proveedor de la lista para bloquearlo.</p>
-          </div>
-        )}
-      </div>
+      {/* Contenido dinámico */}
+      <div className="contenido-subfuncion">{renderContenido()}</div>
     </div>
   );
 };
 
-// Componente para el formulario de proveedores
-const FormularioProveedor = ({ onSubmit, titulo, datosIniciales }) => {
-  const [formData, setFormData] = useState(
-    datosIniciales || {
-      email: '',
-      nit: '',
-      nombreContacto: '',
-      paginaWeb: '',
-      telefonoContacto: '',
-    }
-  );
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+// Componente para listar proveedores
+const ListaProveedores = ({ proveedores, setProveedorSeleccionado, setAccion, handleBloquearProveedor }) => {
+  console.log("Proveedores recibidos en ListaProveedores:", proveedores); // Verifica los datos
 
   return (
-    <div className="formulario-proveedor">
-      <h2>{titulo}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>NIT/Cédula:</label>
-          <input
-            type="text"
-            name="nit"
-            value={formData.nit}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Nombre de Contacto:</label>
-          <input
-            type="text"
-            name="nombreContacto"
-            value={formData.nombreContacto}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Página Web:</label>
-          <input
-            type="url"
-            name="paginaWeb"
-            value={formData.paginaWeb}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Teléfono de Contacto:</label>
-          <input
-            type="tel"
-            name="telefonoContacto"
-            value={formData.telefonoContacto}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="submit-button">
-          {titulo}
-        </button>
-      </form>
+    <div className="lista-proveedores">
+      <h2>Lista de Proveedores</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Email</th>
+            <th>NIT/Cédula</th>
+            <th>Nombre de Contacto</th>
+            <th>Página Web</th>
+            <th>Teléfono de Contacto</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {proveedores.map((proveedor) => (
+            <tr key={proveedor.id}>
+              <td>{proveedor.proveedor}</td>
+              <td>{proveedor.email}</td>
+              <td>{proveedor.nitCedula}</td>
+              <td>{proveedor.nombreContacto}</td>
+              <td>{proveedor.paginaWeb}</td>
+              <td>{proveedor.telefonoContacto}</td>
+              <td>
+                {proveedor.activo ? ( // Mostrar "Activo" o "Inactivo" según el estado
+                  <span style={{ color: "green" }}>Activo</span>
+                ) : (
+                  <span style={{ color: "red" }}>Inactivo</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

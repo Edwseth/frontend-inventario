@@ -178,3 +178,158 @@
     margin: 5px 0;
     color: #555;
   }
+
+  /* Estilos para el formulario de productos */
+.formulario-producto {
+  max-width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 25px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Dos columnas */
+  column-gap: 15px;
+  row-gap: 0; /* Espacio entre los campos */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 3px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.submit-button {
+  grid-column: span 3; /* El botón ocupa dos columnas */
+  padding: 10px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #16a085;
+}
+
+/* Estilos para el componente ActualizarProducto */
+.actualizar-producto {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.actualizar-producto h2 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.buscar-sku {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.buscar-sku input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.buscar-sku button {
+  padding: 8px 16px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buscar-sku button:hover {
+  background-color: #16a085;
+}
+
+.formulario-actualizar {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  gap: 15px; /* Espacio entre los campos */
+}
+
+.formulario-actualizar .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-actualizar .form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.formulario-actualizar .form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.formulario-actualizar .submit-button {
+  grid-column: span 2; /* El botón ocupa dos columnas */
+  padding: 10px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.formulario-actualizar .submit-button:hover {
+  background-color: #16a085;
+}
+
+/* Estilos para los mensajes */
+.mensaje {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.mensaje.exito {
+  background-color: #d4edda; /* Fondo verde para mensajes de éxito */
+  color: #155724; /* Texto verde oscuro */
+  border: 1px solid #c3e6cb;
+}
+
+.mensaje.error {
+  background-color: #f8d7da; /* Fondo rojo para mensajes de error */
+  color: #721c24; /* Texto rojo oscuro */
+  border: 1px solid #f5c6cb;
+}
