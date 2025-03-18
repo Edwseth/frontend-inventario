@@ -7,7 +7,7 @@ import Registro from './views/Registro/Registro';
 import Usuarios from './views/Usuarios/Usuarios';
 import Proveedores from './views/Proveedores/Proveedores';
 import Productos from './views/Productos/Productos';
-import OrdenCompra from './views/OrdenCompra/OrdenCompra';
+import OrdenCompra from './views/OrdenCompra/OrdenesCompra';
 import Movimientos from './views/MovimientosMP/MovimientosMP';
 import Informes from './views/Informes/Informes';
 import BrandWatermark from './components/Common/BrandWatermark';

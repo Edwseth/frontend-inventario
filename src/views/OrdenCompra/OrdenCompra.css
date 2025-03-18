@@ -333,3 +333,79 @@
   padding: 12px;
   font-size: 1.1em;
 }
+
+/* Estilos generales */
+.ordenes-compra-container {
+  padding: 20px;
+}
+
+.subfunciones {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.subfuncion {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.subfuncion.active {
+  background-color: #1abc9c;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+.formulario-orden-compra {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.detalle {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.agregar-detalle, .eliminar-detalle {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #1abc9c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.agregar-detalle:hover, .eliminar-detalle:hover {
+  background-color: #16a085;
+}
+
+/* Estilos para la lista de órdenes */
+.lista-ordenes-compra table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lista-ordenes-compra th, .lista-ordenes-compra td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.lista-ordenes-compra th {
+  background-color: #f4f4f4;
+}

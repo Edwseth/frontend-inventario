@@ -43,9 +43,7 @@ export const buscarProducto = async (id) => {
 
 export const verificarDisponibilidad = async (id, cantidad) => {
   try {
-    const response = await axios.post(`/api/productos/${id}/verificar-disponibilidad`, {
-      cantidad,
-    });
+    const response = await axios.get(`/api/productos/${id}/verificar/${cantidad}`);
     return response.data;
   } catch (error) {
     console.error('Error al verificar disponibilidad:', error);

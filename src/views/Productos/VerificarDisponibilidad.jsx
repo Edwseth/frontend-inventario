@@ -1,12 +1,20 @@
 // src/views/Productos/VerificarDisponibilidad.jsx
 import React, { useState } from 'react';
 
-const VerificarDisponibilidad = ({ onVerificar }) => {
-  const [verificarId, setVerificarId] = useState('');
-  const [verificarCantidad, setVerificarCantidad] = useState('');
+const VerificarDisponibilidad = ({ productos, onVerificar }) => {
+  const [sku, setSku] = useState('');
+  const [cantidad, setCantidad] = useState('');
 
   const handleVerificar = () => {
-    onVerificar(verificarId, verificarCantidad);
+    // Buscar el producto por SKU
+    const producto = productos.find((p) => p.sku === sku);
+    if (producto) {
+      console.log('Producto encontrado:', producto); // Depuración
+      onVerificar(producto.id, cantidad); // Enviar el ID y la cantidad
+    } else {
+      console.log('Producto no encontrado'); // Depuración
+      alert('Producto no encontrado'); // Mostrar un mensaje si no se encuentra el producto
+    }
   };
 
   return (
@@ -15,15 +23,15 @@ const VerificarDisponibilidad = ({ onVerificar }) => {
       <div className="form-group">
         <input
           type="text"
-          placeholder="ID del Producto"
-          value={verificarId}
-          onChange={(e) => setVerificarId(e.target.value)}
+          placeholder="Ingrese el SKU del producto"
+          value={sku}
+          onChange={(e) => setSku(e.target.value)}
         />
         <input
           type="number"
           placeholder="Cantidad"
-          value={verificarCantidad}
-          onChange={(e) => setVerificarCantidad(e.target.value)}
+          value={cantidad}
+          onChange={(e) => setCantidad(e.target.value)}
         />
         <button onClick={handleVerificar}>Verificar</button>
       </div>

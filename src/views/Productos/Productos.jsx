@@ -13,7 +13,7 @@ import FormularioProducto from './FormularioProducto';
 import BuscarProducto from './BuscarProducto';
 import VerificarDisponibilidad from './VerificarDisponibilidad';
 import DeshabilitarProducto from './DeshabilitarProducto';
-import ActualizarProducto from './ActualizarProducto'; // Importar el nuevo componente
+import ActualizarProducto from './ActualizarProducto';
 import './Productos.css';
 
 // Importar los iconos
@@ -28,6 +28,7 @@ const Productos = () => {
   const [productos, setProductos] = useState([]);
   const [accion, setAccion] = useState('');
   const [productoEncontrado, setProductoEncontrado] = useState(null);
+  const [mensajeDisponibilidad, setMensajeDisponibilidad] = useState('');
 
   useEffect(() => {
     if (accion === 'listar') {
@@ -74,10 +75,18 @@ const Productos = () => {
 
   const handleVerificarDisponibilidad = async (id, cantidad) => {
     try {
-      const data = await verificarDisponibilidad(id, cantidad);
-      console.log('Mensaje de disponibilidad:', data.mensaje); // Para depuración
+      console.log('Verificando disponibilidad para el ID:', id, 'Cantidad:', cantidad);
+      const disponible = await verificarDisponibilidad(id, cantidad);
+      console.log('Respuesta del backend:', disponible);
+  
+      if (disponible) {
+        setMensajeDisponibilidad(`El producto está disponible para la cantidad: ${cantidad}`);
+      } else {
+        setMensajeDisponibilidad(`El producto NO está disponible para la cantidad: ${cantidad}`);
+      }
     } catch (error) {
       console.error('Error al verificar disponibilidad:', error);
+      setMensajeDisponibilidad('Error al verificar disponibilidad. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -175,7 +184,10 @@ const Productos = () => {
         )}
 
         {accion === 'verificar' && (
-          <VerificarDisponibilidad onVerificar={handleVerificarDisponibilidad} />
+          <VerificarDisponibilidad
+            productos={productos}
+            onVerificar={handleVerificarDisponibilidad}
+          />
         )}
 
         {accion === 'deshabilitar' && (
@@ -192,6 +204,12 @@ const Productos = () => {
             <p>Stock Mínimo: {productoEncontrado.stockMin}</p>
             <p>Stock Mín. Proveedor: {productoEncontrado.stockMinProveedor}</p>
             <p>Unidad de Medida: {productoEncontrado.unidadMedida}</p>
+          </div>
+        )}
+
+        {accion === 'verificar' && mensajeDisponibilidad && (
+          <div className="mensaje-disponibilidad">
+            <p>{mensajeDisponibilidad}</p>
           </div>
         )}
       </div>

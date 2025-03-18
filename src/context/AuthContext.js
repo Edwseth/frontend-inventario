@@ -11,11 +11,11 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('jwtToken');
 
-    // Verificar si hay datos en localStorage antes de intentar analizarlos
     if (storedUser && token) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
+        // Incluir el token en el estado del usuario
+        setUser({ ...parsedUser, token });
       } catch (error) {
         console.error('Error al analizar el usuario desde localStorage:', error);
         // Limpiar localStorage si hay un error
@@ -28,18 +28,18 @@ export const AuthProvider = ({ children }) => {
   // Función para iniciar sesión
   const login = (userData) => {
     try {
-      // Guardar el usuario en localStorage como JSON
       localStorage.setItem('user', JSON.stringify({
         username: userData.username,
-        token: userData.token,
-        role: userData.role, // Asegúrate de incluir el rol
-        email: userData.email, // Asegúrate de incluir el email si es necesario
+        roles: userData.roles || [], // ✅ Asegurar que sea un array
+        email: userData.email,
       }));
+      localStorage.setItem('jwtToken', userData.token);
       setUser(userData);
     } catch (error) {
       console.error('Error al guardar el usuario en localStorage:', error);
     }
   };
+  
 
   // Función para cerrar sesión
   const logout = () => {
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   // Función para verificar si el usuario es administrador
   const isAdmin = () => {
-    return user && user.role === 'ROLE_ADMIN';
+    return user && Array.isArray(user.roles) && user.roles.includes('ROLE_ADMIN');
   };
 
   return (

@@ -128,7 +128,7 @@ const Usuarios = () => {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
+                <th>Nombre</th>
                   <th>Nombre de Usuario</th>
                   <th>Correo Electrónico</th>
                   <th>Rol</th>
@@ -137,7 +137,7 @@ const Usuarios = () => {
               <tbody>
                 {usuarios.map((usuario) => (
                   <tr key={usuario.id}>
-                    <td>{usuario.id}</td>
+                    <td>{usuario.name}</td>
                     <td>{usuario.username}</td>
                     <td>{usuario.email}</td>
                     <td>{usuario.role}</td>
