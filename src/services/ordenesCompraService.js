@@ -16,8 +16,13 @@ const buscarOrdenCompra = async (id) => {
 };
 
 const crearOrdenCompra = async (orden) => {
-  const response = await axios.post(ORDENES_COMPRA_URL, orden);
-  return response.data;
+  try {
+    const response = await axios.post(ORDENES_COMPRA_URL, orden);
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear orden de compra:', error);
+    throw error;
+  }
 };
 
 const obtenerProveedores = async () => {

@@ -1,8 +1,11 @@
+//src/views/OrdenCompra/FormularioOrdenCompra.jsx
 import React, { useState } from 'react';
 
-const FormularioOrdenCompra = ({ onSubmit, titulo, proveedores, productos, orden }) => {
+const FormularioOrdenCompra = ({ onSubmit, titulo, proveedores = [], productos = [], orden }) => {
   const [formData, setFormData] = useState(
     orden || {
+      fechaOrden: '', // Asegúrate de incluir fechaOrden
+      estado: 'CREADA', // Asegúrate de incluir estado
       proveedorId: '',
       detalles: [{ productoId: '', cantidad: '', precioUnitario: '' }],
     }
@@ -10,12 +13,21 @@ const FormularioOrdenCompra = ({ onSubmit, titulo, proveedores, productos, orden
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    if (name === 'proveedorId') {
-      setFormData({ ...formData, proveedorId: value });
+  
+    if (name === 'proveedorId' || name === 'fechaOrden') {
+      // Manejar cambios en proveedorId y fechaOrden
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     } else {
+      // Manejar cambios en los detalles de la orden
       const nuevosDetalles = [...formData.detalles];
       nuevosDetalles[index][name] = value;
-      setFormData({ ...formData, detalles: nuevosDetalles });
+      setFormData({
+        ...formData,
+        detalles: nuevosDetalles,
+      });
     }
   };
 
@@ -33,13 +45,37 @@ const FormularioOrdenCompra = ({ onSubmit, titulo, proveedores, productos, orden
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+  
+    // Ajustar la estructura de los detalles para incluir un objeto producto
+    const detallesAjustados = formData.detalles.map((detalle) => ({
+      ...detalle,
+      producto: { id: detalle.productoId }, // Convertir productoId en un objeto producto
+    }));
+  
+    const datosAjustados = {
+      ...formData,
+      detalles: detallesAjustados,
+    };
+  
+    console.log('Datos enviados:', datosAjustados); // Verifica los datos antes de enviar
+    onSubmit(datosAjustados);
   };
 
   return (
     <div className="formulario-orden-compra">
       <h2>{titulo}</h2>
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Fecha de la Orden:</label>
+          <input
+            type="date"
+            name="fechaOrden"
+            value={formData.fechaOrden}
+            onChange={(e) => handleChange(e)}
+            required
+          />
+        </div>
+
         <div className="form-group">
           <label>Proveedor:</label>
           <select
@@ -51,7 +87,7 @@ const FormularioOrdenCompra = ({ onSubmit, titulo, proveedores, productos, orden
             <option value="">Seleccione un proveedor</option>
             {proveedores.map((proveedor) => (
               <option key={proveedor.id} value={proveedor.id}>
-                {proveedor.nombre}
+                {proveedor.proveedor}
               </option>
             ))}
           </select>

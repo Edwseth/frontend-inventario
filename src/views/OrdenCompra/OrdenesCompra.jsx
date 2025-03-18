@@ -16,7 +16,6 @@ import eliminarIcon from '../../assets/icons/eliminar.png';
 import estadoIcon from '../../assets/icons/check.png';
 
 const OrdenesCompra = () => {
-  // Obtener el estado de autenticación y el usuario
   const { user, isAdmin, isAuthenticated } = useAuth();
   const [ordenesCompra, setOrdenesCompra] = useState([]);
   const [accion, setAccion] = useState('');
@@ -24,6 +23,7 @@ const OrdenesCompra = () => {
   const [proveedores, setProveedores] = useState([]);
   const [productos, setProductos] = useState([]);
   const [error, setError] = useState('');
+  const [mensajeExito, setMensajeExito] = useState('');
 
   // Función para cargar todas las órdenes de compra
   const cargarOrdenesCompra = async () => {
@@ -61,33 +61,31 @@ const OrdenesCompra = () => {
     }
   }, [accion]);
 
-  // Función para buscar una orden de compra por ID
-  const handleBuscarOrdenCompra = async (id) => {
-    try {
-      const orden = await ordenesCompraService.buscarOrdenCompra(id);
-      setOrdenEncontrada(orden);
-      setError('');
-    } catch (error) {
-      setOrdenEncontrada(null);
-      setError('Orden no encontrada');
-    }
-  };
-
   // Función para crear una nueva orden de compra
   const handleCrearOrdenCompra = async (nuevaOrden) => {
     try {
       await ordenesCompraService.crearOrdenCompra(nuevaOrden);
-      cargarOrdenesCompra(); // Recargar la lista de órdenes
-      setError('');
+      setMensajeExito('Orden de compra creada exitosamente'); // Mostrar mensaje de éxito
+      setError(''); // Limpiar mensajes de error
+      setTimeout(() => setMensajeExito(''), 5000); // Limpiar el mensaje después de 5 segundos
     } catch (error) {
       setError('Error al crear orden de compra');
+      setMensajeExito(''); // Limpiar mensaje de éxito
     }
   };
+
+  // Limpiar el estado de ordenEncontrada al cambiar de acción
+  useEffect(() => {
+    if (accion !== 'buscar') {
+      setOrdenEncontrada(null);
+    }
+  }, [accion]);
 
   return (
     <div className="ordenes-compra-container">
       <h1>Gestión de Órdenes de Compra</h1>
       {error && <div className="error-message">{error}</div>}
+      {mensajeExito && <div className="success-message">{mensajeExito}</div>} {/* Mostrar mensaje de éxito */}
 
       {/* Botones de subfunciones con iconos */}
       <div className="subfunciones">
@@ -124,7 +122,32 @@ const OrdenesCompra = () => {
         {accion === 'listar' && <ListaOrdenesCompra ordenes={ordenesCompra} />}
 
         {accion === 'buscar' && (
-          <BuscarOrdenCompra onBuscar={handleBuscarOrdenCompra} />
+          <>
+            <BuscarOrdenCompra onBuscar={setOrdenEncontrada} />
+            {ordenEncontrada ? (
+              <div className="detalles-orden">
+                <h3>Detalles de la Orden de Compra</h3>
+                <p><strong>ID:</strong> {ordenEncontrada.id}</p>
+                <p><strong>Fecha:</strong> {ordenEncontrada.fechaOrden}</p>
+                <p><strong>Estado:</strong> {ordenEncontrada.estado}</p>
+                <p><strong>Proveedor:</strong> {ordenEncontrada.proveedor.nombre}</p>
+                <p><strong>NIT/Cédula:</strong> {ordenEncontrada.proveedor.nitCedula}</p>
+                <p><strong>Teléfono:</strong> {ordenEncontrada.proveedor.telefonoContacto}</p>
+                <h4>Detalles de la Orden</h4>
+                {ordenEncontrada.detalles.map((detalle, index) => (
+                  <div key={index} className="detalle-producto">
+                    <p><strong>Producto:</strong> {detalle.producto.nombre}</p>
+                    <p><strong>Cantidad Solicitada:</strong> {detalle.cantidad}</p>
+                    <p><strong>Cantidad Recibida:</strong> {detalle.cantidadRecibida}</p>
+                    <p><strong>Cantidad Pendiente:</strong> {detalle.cantidadPendiente}</p>
+                    <p><strong>Precio Unitario:</strong> ${detalle.precioUnitario.toFixed(2)}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No se encontró ninguna orden con el ID proporcionado.</p>
+            )}
+          </>
         )}
 
         {accion === 'modificar' && (
