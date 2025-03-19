@@ -90,16 +90,16 @@ const OrdenesCompra = () => {
       {/* Botones de subfunciones con iconos */}
       <div className="subfunciones">
         {[
-          { accion: 'crear', icono: adicionarIcon, texto: 'Crear' },
-          { accion: 'listar', icono: listarIcon, texto: 'Listar' },
-          { accion: 'buscar', icono: buscarIcon, texto: 'Buscar' },
-          { accion: 'modificar', icono: refreshIcon, texto: 'Modificar' },
-          { accion: 'eliminar', icono: eliminarIcon, texto: 'Eliminar' },
-          { accion: 'estado', icono: estadoIcon, texto: 'Estado' },
+          { accion: 'crear', icono: adicionarIcon, texto: 'Crear Ordenes' },
+          { accion: 'listar', icono: listarIcon, texto: 'Listar Ordenes' },
+          { accion: 'buscar', icono: buscarIcon, texto: 'Buscar Ordenes' },
+          { accion: 'modificar', icono: refreshIcon, texto: 'Modificar Ordenes' },
+          { accion: 'eliminar', icono: eliminarIcon, texto: 'Eliminar Ordenes' },
+          { accion: 'estado', icono: estadoIcon, texto: 'Estado Ordenes' },
         ].map((subaccion) => (
           <div
             key={subaccion.accion}
-            className={`subfuncion ${accion === subaccion.accion ? 'active' : ''}`}
+            className={`subfuncion ${accion === subaccion.accion ? 'active' : ''}`}git
             onClick={() => setAccion(subaccion.accion)}
           >
             <img src={subaccion.icono} alt={subaccion.accion} className="icono-subfuncion" />
@@ -110,6 +110,12 @@ const OrdenesCompra = () => {
 
       {/* Contenido según la acción seleccionada */}
       <div className="contenido-subfuncion">
+      {!accion && ( // Si no hay acción seleccionada, mostrar mensaje de bienvenida
+          <div className="mensaje-bienvenida">
+            <h2>Bienvenido a la Gestión de Ordenes de Compra</h2>
+            <p>Selecciona una acción para comenzar.</p>
+          </div>
+        )}
         {accion === 'crear' && (
           <FormularioOrdenCompra
             onSubmit={handleCrearOrdenCompra}
