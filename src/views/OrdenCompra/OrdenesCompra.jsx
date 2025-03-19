@@ -1,10 +1,12 @@
 // src/views/OrdenesCompra/OrdenesCompra.jsx
 import React, { useState, useEffect } from 'react';
-import ordenesCompraService from '../../services/ordenesCompraService';
 import { useAuth } from '../../context/AuthContext';
+import useCargarDatos from '../../hooks/useCargarDatos';
+import ordenesCompraService from '../../services/ordenesCompraService';
 import FormularioOrdenCompra from './FormularioOrdenCompra';
 import ListaOrdenesCompra from './ListarOrdenesCompra';
 import BuscarOrdenCompra from './BuscarOrdenCompra';
+import ModificarOrdenCompra from './ModificarOrdenCompra';
 import './OrdenCompra.css';
 
 // Importar iconos
@@ -17,75 +19,63 @@ import estadoIcon from '../../assets/icons/check.png';
 
 const OrdenesCompra = () => {
   const { user, isAdmin, isAuthenticated } = useAuth();
-  const [ordenesCompra, setOrdenesCompra] = useState([]);
   const [accion, setAccion] = useState('');
   const [ordenEncontrada, setOrdenEncontrada] = useState(null);
-  const [proveedores, setProveedores] = useState([]);
-  const [productos, setProductos] = useState([]);
-  const [error, setError] = useState('');
   const [mensajeExito, setMensajeExito] = useState('');
-
-  // Función para cargar todas las órdenes de compra
-  const cargarOrdenesCompra = async () => {
-    try {
-      const data = await ordenesCompraService.obtenerOrdenesCompra();
-      setOrdenesCompra(data);
-      setError('');
-    } catch (error) {
-      setError('Error al cargar órdenes de compra');
-    }
-  };
-
-  // Cargar datos iniciales (proveedores y productos)
-  useEffect(() => {
-    const cargarDatosIniciales = async () => {
-      try {
-        const [proveedoresData, productosData] = await Promise.all([
-          ordenesCompraService.obtenerProveedores(),
-          ordenesCompraService.obtenerProductos(),
-        ]);
-        setProveedores(proveedoresData);
-        setProductos(productosData);
-      } catch (error) {
-        setError('Error al cargar datos iniciales');
-      }
-    };
-
-    cargarDatosIniciales();
-  }, []);
+  const [error, setError] = useState(null);
+  const { proveedores, productos, ordenesCompra, cargarOrdenesCompra } = useCargarDatos();
 
   // Cargar órdenes de compra cuando la acción es "listar"
   useEffect(() => {
     if (accion === 'listar') {
       cargarOrdenesCompra();
     }
-  }, [accion]);
+  }, [accion, cargarOrdenesCompra]);
 
   // Función para crear una nueva orden de compra
   const handleCrearOrdenCompra = async (nuevaOrden) => {
     try {
       await ordenesCompraService.crearOrdenCompra(nuevaOrden);
-      setMensajeExito('Orden de compra creada exitosamente'); // Mostrar mensaje de éxito
-      setError(''); // Limpiar mensajes de error
-      setTimeout(() => setMensajeExito(''), 5000); // Limpiar el mensaje después de 5 segundos
+      setMensajeExito('Orden de compra creada exitosamente');
+      setError('null');
+      setTimeout(() => setMensajeExito(''), 5000);
     } catch (error) {
       setError('Error al crear orden de compra');
-      setMensajeExito(''); // Limpiar mensaje de éxito
+      setMensajeExito('');
     }
   };
 
-  // Limpiar el estado de ordenEncontrada al cambiar de acción
+  // Función para manejar la modificación de una orden de compra
+  const handleModificarOrdenCompra = async () => {
+    setMensajeExito('Orden de compra modificada exitosamente');
+    setTimeout(() => setMensajeExito(''), 5000);
+  };
+
+  // Limpiar el estado de ordenEncontrada solo si no es "buscar" ni "modificar"
   useEffect(() => {
-    if (accion !== 'buscar') {
+    if (accion !== 'buscar' && accion !== 'modificar') {
       setOrdenEncontrada(null);
     }
   }, [accion]);
+
+  // Función para buscar una orden de compra
+  const handleBuscarOrdenCompra = async (id) => {
+    try {
+      const orden = await ordenesCompraService.buscarOrdenCompra(id);
+      setOrdenEncontrada(orden);
+      setError(null);
+      setAccion('modificar'); // Cambiar automáticamente a la acción de modificar
+    } catch (error) {
+      setOrdenEncontrada(null);
+      setError('Orden no encontrada');
+    }
+  };
 
   return (
     <div className="ordenes-compra-container">
       <h1>Gestión de Órdenes de Compra</h1>
       {error && <div className="error-message">{error}</div>}
-      {mensajeExito && <div className="success-message">{mensajeExito}</div>} {/* Mostrar mensaje de éxito */}
+      {mensajeExito && <div className="success-message">{mensajeExito}</div>}
 
       {/* Botones de subfunciones con iconos */}
       <div className="subfunciones">
@@ -93,14 +83,16 @@ const OrdenesCompra = () => {
           { accion: 'crear', icono: adicionarIcon, texto: 'Crear Ordenes' },
           { accion: 'listar', icono: listarIcon, texto: 'Listar Ordenes' },
           { accion: 'buscar', icono: buscarIcon, texto: 'Buscar Ordenes' },
-          { accion: 'modificar', icono: refreshIcon, texto: 'Modificar Ordenes' },
+          { accion: 'modificar', icono: refreshIcon, texto: 'Modificar Ordenes', deshabilitado: !ordenEncontrada },
           { accion: 'eliminar', icono: eliminarIcon, texto: 'Eliminar Ordenes' },
           { accion: 'estado', icono: estadoIcon, texto: 'Estado Ordenes' },
         ].map((subaccion) => (
           <div
             key={subaccion.accion}
-            className={`subfuncion ${accion === subaccion.accion ? 'active' : ''}`}git
-            onClick={() => setAccion(subaccion.accion)}
+            className={`subfuncion ${accion === subaccion.accion ? 'active' : ''} ${subaccion.deshabilitado ? 'disabled' : ''}`}
+            onClick={() => {
+              if (!subaccion.deshabilitado) setAccion(subaccion.accion);
+            }}
           >
             <img src={subaccion.icono} alt={subaccion.accion} className="icono-subfuncion" />
             <p>{subaccion.texto}</p>
@@ -110,12 +102,13 @@ const OrdenesCompra = () => {
 
       {/* Contenido según la acción seleccionada */}
       <div className="contenido-subfuncion">
-      {!accion && ( // Si no hay acción seleccionada, mostrar mensaje de bienvenida
+        {!accion && ( // Si no hay acción seleccionada, mostrar mensaje de bienvenida
           <div className="mensaje-bienvenida">
             <h2>Bienvenido a la Gestión de Ordenes de Compra</h2>
             <p>Selecciona una acción para comenzar.</p>
           </div>
         )}
+
         {accion === 'crear' && (
           <FormularioOrdenCompra
             onSubmit={handleCrearOrdenCompra}
@@ -157,7 +150,12 @@ const OrdenesCompra = () => {
         )}
 
         {accion === 'modificar' && (
-          <p>Funcionalidad de modificar en desarrollo...</p>
+          <ModificarOrdenCompra
+            ordenId={ordenEncontrada?.id}
+            proveedores={proveedores}
+            productos={productos}
+            onModificar={handleModificarOrdenCompra}
+          />
         )}
 
         {accion === 'eliminar' && (

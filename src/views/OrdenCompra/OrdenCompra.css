@@ -218,3 +218,8 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
 }
+
+.subfuncion.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

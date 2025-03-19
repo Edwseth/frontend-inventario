@@ -35,10 +35,21 @@ const obtenerProductos = async () => {
   return response.data;
 };
 
+const modificarOrdenCompra = async (id, orden) => {
+  try {
+    const response = await axios.put(`${ORDENES_COMPRA_URL}/${id}`, orden);
+    return response.data;
+  } catch (error) {
+    console.error('Error al modificar orden de compra:', error);
+    throw error;
+  }
+};
+
 export default {
   obtenerOrdenesCompra,
   buscarOrdenCompra,
   crearOrdenCompra,
+  modificarOrdenCompra,
   obtenerProveedores,
   obtenerProductos,
 };
