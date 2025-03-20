@@ -45,6 +45,7 @@ const FormularioOrdenCompra = ({ onSubmit, titulo, proveedores = [], productos =
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    onSubmit();
 
     // Validar campos obligatorios
     if (!formData.fechaOrden || !formData.proveedorId || formData.detalles.length === 0) {

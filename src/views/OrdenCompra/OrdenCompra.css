@@ -5,17 +5,32 @@
   font-family: Arial, sans-serif;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
+  font-size: 2rem;
 }
 
 .error-message {
-  color: #ff0000;
-  background-color: #ffe6e6;
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.success-message {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -34,7 +49,9 @@ h1 {
   cursor: pointer;
   padding: 10px;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .subfuncion.active {
@@ -44,6 +61,12 @@ h1 {
 
 .subfuncion:hover {
   background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.subfuncion.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .icono-subfuncion {
@@ -63,10 +86,14 @@ h1 {
 /* Estilos para el formulario de búsqueda */
 .buscar-orden {
   margin-bottom: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .buscar-orden h2 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   color: #333;
 }
 
@@ -94,10 +121,11 @@ h1 {
 
 /* Estilos para los detalles de la orden */
 .detalles-orden {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .detalles-orden h3 {
@@ -117,10 +145,11 @@ h1 {
 }
 
 .detalle-producto {
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
+  border: 1px solid #ddd;
 }
 
 .detalle-producto p {
@@ -130,10 +159,11 @@ h1 {
 
 /* Estilos para el formulario de creación de órdenes */
 .formulario-orden-compra {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .formulario-orden-compra h3 {
@@ -186,6 +216,7 @@ h1 {
 .lista-ordenes-compra table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .lista-ordenes-compra th,
@@ -222,4 +253,35 @@ h1 {
 .subfuncion.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+/* Estilos para la confirmación de eliminación */
+.eliminar-orden-compra {
+  padding: 20px;
+  background-color: #ffe6e6;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.boton-eliminar-confirmar {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.boton-eliminar-confirmar:hover {
+  background-color: #cc0000;
+}
+
+.detalles-orden {
+  margin-bottom: 20px;
+}
+
+.detalle-producto {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
 }

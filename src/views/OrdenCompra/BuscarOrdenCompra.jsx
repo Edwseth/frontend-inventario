@@ -8,12 +8,17 @@ const BuscarOrdenCompra = ({ onBuscar }) => {
 
   const handleBuscar = async () => {
     try {
+      if (!buscarId) {
+        setError('Debe ingresar un ID para buscar');
+        onBuscar(null); // Notify parent that no order was found
+        return;
+      }
       const orden = await ordenesCompraService.buscarOrdenCompra(buscarId);
-      onBuscar(orden); // Pasar la orden encontrada al componente padre
-      setError('');
+      onBuscar(orden); // Pass the found order to the parent component
+      setError(''); // Clear any previous error
     } catch (error) {
       setError('Orden no encontrada');
-      onBuscar(null); // Notificar al componente padre que no se encontró la orden
+      onBuscar(null); // Notify parent that no order was found
     }
   };
 

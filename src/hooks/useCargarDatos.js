@@ -1,5 +1,5 @@
 // src/hooks/useCargarDatos.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import ordenesCompraService from '../services/ordenesCompraService';
 
 const useCargarDatos = () => {
@@ -27,15 +27,14 @@ const useCargarDatos = () => {
   }, []);
 
   // Función para cargar todas las órdenes de compra
-  const cargarOrdenesCompra = async () => {
+  const cargarOrdenesCompra = useCallback(async () => {
     try {
-      const data = await ordenesCompraService.obtenerOrdenesCompra();
-      setOrdenesCompra(data);
-      setError('');
+      const ordenes = await ordenesCompraService.obtenerOrdenesCompra();
+      setOrdenesCompra(ordenes);
     } catch (error) {
-      setError('Error al cargar órdenes de compra');
+      console.error('Error al cargar órdenes de compra:', error);
     }
-  };
+  }, []);
 
   return {
     proveedores,

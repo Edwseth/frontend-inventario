@@ -45,11 +45,22 @@ const modificarOrdenCompra = async (id, orden) => {
   }
 };
 
+const eliminarOrdenCompra = async (id) => {
+  try {
+    const response = await axios.delete(`${ORDENES_COMPRA_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar orden:', error);
+    throw error;
+  }
+};
+
 export default {
   obtenerOrdenesCompra,
   buscarOrdenCompra,
   crearOrdenCompra,
   modificarOrdenCompra,
+  eliminarOrdenCompra,
   obtenerProveedores,
   obtenerProductos,
 };

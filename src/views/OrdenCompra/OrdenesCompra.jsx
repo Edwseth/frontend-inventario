@@ -1,12 +1,12 @@
 // src/views/OrdenesCompra/OrdenesCompra.jsx
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
 import useCargarDatos from '../../hooks/useCargarDatos';
 import ordenesCompraService from '../../services/ordenesCompraService';
 import FormularioOrdenCompra from './FormularioOrdenCompra';
 import ListaOrdenesCompra from './ListarOrdenesCompra';
 import BuscarOrdenCompra from './BuscarOrdenCompra';
 import ModificarOrdenCompra from './ModificarOrdenCompra';
+import EliminarOrdenCompra from './EliminarOrdenCompra';
 import './OrdenCompra.css';
 
 // Importar iconos
@@ -18,12 +18,11 @@ import eliminarIcon from '../../assets/icons/eliminar.png';
 import estadoIcon from '../../assets/icons/check.png';
 
 const OrdenesCompra = () => {
-  const { user, isAdmin, isAuthenticated } = useAuth();
+  const { proveedores, productos, ordenesCompra, cargarOrdenesCompra } = useCargarDatos();
   const [accion, setAccion] = useState('');
   const [ordenEncontrada, setOrdenEncontrada] = useState(null);
   const [mensajeExito, setMensajeExito] = useState('');
   const [error, setError] = useState(null);
-  const { proveedores, productos, ordenesCompra, cargarOrdenesCompra } = useCargarDatos();
 
   // Cargar órdenes de compra cuando la acción es "listar"
   useEffect(() => {
@@ -58,19 +57,6 @@ const OrdenesCompra = () => {
     }
   }, [accion]);
 
-  // Función para buscar una orden de compra
-  const handleBuscarOrdenCompra = async (id) => {
-    try {
-      const orden = await ordenesCompraService.buscarOrdenCompra(id);
-      setOrdenEncontrada(orden);
-      setError(null);
-      setAccion('modificar'); // Cambiar automáticamente a la acción de modificar
-    } catch (error) {
-      setOrdenEncontrada(null);
-      setError('Orden no encontrada');
-    }
-  };
-
   return (
     <div className="ordenes-compra-container">
       <h1>Gestión de Órdenes de Compra</h1>
@@ -84,14 +70,16 @@ const OrdenesCompra = () => {
           { accion: 'listar', icono: listarIcon, texto: 'Listar Ordenes' },
           { accion: 'buscar', icono: buscarIcon, texto: 'Buscar Ordenes' },
           { accion: 'modificar', icono: refreshIcon, texto: 'Modificar Ordenes', deshabilitado: !ordenEncontrada },
-          { accion: 'eliminar', icono: eliminarIcon, texto: 'Eliminar Ordenes' },
+          { accion: 'eliminar', icono: eliminarIcon, texto: 'Eliminar Ordenes'},
           { accion: 'estado', icono: estadoIcon, texto: 'Estado Ordenes' },
         ].map((subaccion) => (
           <div
             key={subaccion.accion}
             className={`subfuncion ${accion === subaccion.accion ? 'active' : ''} ${subaccion.deshabilitado ? 'disabled' : ''}`}
             onClick={() => {
+              console.log('Ícono de Eliminar Ordenes clickeado'); // eliminar
               if (!subaccion.deshabilitado) setAccion(subaccion.accion);
+              console.log('Acción actual:', 'eliminar'); //eliminar
             }}
           >
             <img src={subaccion.icono} alt={subaccion.accion} className="icono-subfuncion" />
@@ -122,7 +110,16 @@ const OrdenesCompra = () => {
 
         {accion === 'buscar' && (
           <>
-            <BuscarOrdenCompra onBuscar={setOrdenEncontrada} />
+            <BuscarOrdenCompra
+              onBuscar={(orden) => {
+                if (orden) {
+                  setOrdenEncontrada(orden); // Update the state with the found order
+                  setAccion('modificar'); // Automatically transition to the "modificar" action
+                } else {
+                  setOrdenEncontrada(null); // Clear the state if no order is found
+                }
+              }}
+            />
             {ordenEncontrada ? (
               <div className="detalles-orden">
                 <h3>Detalles de la Orden de Compra</h3>
@@ -157,9 +154,20 @@ const OrdenesCompra = () => {
             onModificar={handleModificarOrdenCompra}
           />
         )}
-
         {accion === 'eliminar' && (
-          <p>Funcionalidad de eliminar en desarrollo...</p>
+          <EliminarOrdenCompra
+            orden={ordenEncontrada}
+            onEliminar={async () => {
+              try {
+                await ordenesCompraService.eliminarOrdenCompra(ordenEncontrada.id);
+                setMensajeExito('Orden eliminada exitosamente');
+                setAccion('');
+                setOrdenEncontrada(null);
+              } catch (error) {
+                setError('Error al eliminar la orden de compra');
+              }
+            }}
+          />
         )}
 
         {accion === 'estado' && (
