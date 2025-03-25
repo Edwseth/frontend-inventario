@@ -1,6 +1,7 @@
 // src/views/MovimientosMP/DevolucionBodega.jsx
 import React from 'react';
 import FormularioMovimiento from './FormularioMovimiento';
+import { registrarDevolucion } from '../../services/movimientosService';
 
 const camposDevolucion = [
   { type: 'text', name: 'productoId', placeholder: 'ID del Producto', required: true },
@@ -57,11 +58,26 @@ const camposDevolucion = [
 ];
 
 const DevolucionBodega = ({ onSubmit }) => {
+  const handleSubmit = async (formData) => {
+    try {
+      const movimientosDTO = [
+        {
+          ...formData,
+          tipoMovimiento: 'DEVOLUCION', // Tipo de movimiento para devoluciones
+        },
+      ];
+      const response = await registrarDevolucion(movimientosDTO);
+      console.log('Movimiento registrado:', response);
+    } catch (error) {
+      console.error('Error al registrar movimiento:', error);
+    }
+  };
+
   return (
     <FormularioMovimiento
       titulo="Devolución a Bodega"
       campos={camposDevolucion}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
     />
   );
 };

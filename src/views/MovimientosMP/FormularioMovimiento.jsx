@@ -6,7 +6,8 @@ const FormularioMovimiento = ({ titulo, campos, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    onSubmit(Object.fromEntries(formData));
+    const data = Object.fromEntries(formData);
+    onSubmit(data); // Pasar los datos capturados al método onSubmit
   };
 
   return (

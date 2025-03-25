@@ -1,21 +1,29 @@
 // src/views/MovimientosMP/MovimientosMP.jsx
 import React, { useState } from 'react';
-import axios from '../../config/axios';
+import { registrarRecepcion, registrarSalida, registrarDevolucion } from '../../services/movimientosService';
 import EntradaProducto from '../../views/MovimientosMP/EntradaProducto';
 import SalidaProducto from '../../views/MovimientosMP/SalidaProducto';
 import DevolucionBodega from '../../views/MovimientosMP/DevolucionBodega';
-import entradaIcon from '../../assets/icons/entrada.png'; // Ícono de listar
-import salidaIcon from '../../assets/icons/salida.png'; // Ícono de buscar
-import devolucionIcon from '../../assets/icons/devolucion.png'; // Ícono de actualizar
+import entradaIcon from '../../assets/icons/entrada.png';
+import salidaIcon from '../../assets/icons/salida.png';
+import devolucionIcon from '../../assets/icons/devolucion.png';
 import './MovimientosMP.css';
 
 const MovimientosMP = () => {
-  const [accion, setAccion] = useState('entrada');
+  const [accion, setAccion] = useState('recepcion');
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (url, formData) => {
+  const handleSubmit = async (formData) => {
     try {
-      await axios.post(url, formData);
+      if (accion === 'recepcion') {
+        const idMovimiento = formData.ordenCompraId; // Usar el ID de la orden de compra
+        delete formData.ordenCompraId; // Eliminar el campo antes de enviar
+        await registrarRecepcion(idMovimiento, [formData]);
+      } else if (accion === 'salida') {
+        await registrarSalida(formData); // Enviar directamente los datos
+      } else if (accion === 'devolucion') {
+        await registrarDevolucion([formData]); // Enviar como un array
+      }
       setError(null);
       alert('Movimiento registrado exitosamente');
     } catch (error) {
@@ -31,8 +39,8 @@ const MovimientosMP = () => {
       {/* Subfunciones */}
       <div className="subfunciones">
         <div
-          className={`subfuncion ${accion === 'entrada' ? 'active' : ''}`}
-          onClick={() => setAccion('entrada')}
+          className={`subfuncion ${accion === 'recepcion' ? 'active' : ''}`}
+          onClick={() => setAccion('recepcion')}
         >
           <img src={entradaIcon} alt="Entrada de Producto" />
           <p>Entrada de Producto</p>
@@ -55,23 +63,9 @@ const MovimientosMP = () => {
 
       {/* Contenido de la subfunción seleccionada */}
       <div className="contenido-subfuncion">
-        {accion === 'entrada' && (
-          <EntradaProducto
-            onSubmit={(formData) => handleSubmit('/api/movimientos/entrada', formData)}
-          />
-        )}
-
-        {accion === 'salida' && (
-          <SalidaProducto
-            onSubmit={(formData) => handleSubmit('/api/movimientos/salida', formData)}
-          />
-        )}
-
-        {accion === 'devolucion' && (
-          <DevolucionBodega
-            onSubmit={(formData) => handleSubmit('/api/movimientos/devolucion', formData)}
-          />
-        )}
+        {accion === 'recepcion' && <EntradaProducto onSubmit={handleSubmit} />}
+        {accion === 'salida' && <SalidaProducto onSubmit={handleSubmit} />}
+        {accion === 'devolucion' && <DevolucionBodega onSubmit={handleSubmit} />}
       </div>
 
       {/* Mostrar errores */}
