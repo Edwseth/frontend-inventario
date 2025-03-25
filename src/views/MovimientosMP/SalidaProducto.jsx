@@ -1,4 +1,3 @@
-// src/views/MovimientosMP/SalidaProducto.jsx
 import React from 'react';
 import FormularioMovimiento from './FormularioMovimiento';
 

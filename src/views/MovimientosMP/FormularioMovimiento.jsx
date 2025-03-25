@@ -1,5 +1,6 @@
 // src/views/MovimientosMP/FormularioMovimiento.jsx
 import React from 'react';
+import './FormularioMovimiento.css'; // Asegurarse de que los estilos estén importados
 
 const FormularioMovimiento = ({ titulo, campos, onSubmit }) => {
   const handleSubmit = (e) => {
@@ -9,37 +10,52 @@ const FormularioMovimiento = ({ titulo, campos, onSubmit }) => {
   };
 
   return (
-    <div className="formulario-accion">
+    <form onSubmit={handleSubmit}>
       <h2>{titulo}</h2>
-      <form onSubmit={handleSubmit}>
-        {campos.map((campo, index) => (
-          <div key={index} className="form-group">
-            {campo.type === 'select' ? (
-              <select name={campo.name} required={campo.required}>
-                {campo.options.map((option, i) => (
-                  <option key={i} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            ) : campo.type === 'checkbox' ? (
-              <>
-                <input type="checkbox" name={campo.name} />
-                <label>{campo.label}</label>
-              </>
-            ) : (
+      <div className="form-grid">
+        {campos.map((campo, index) => {
+          if (campo.type === 'select') {
+            return (
+              <div key={index} className="form-field">
+                <label htmlFor={campo.name}>
+                  {campo.name === 'categoria' && 'Categoría'}
+                  {campo.name === 'subcategoria' && 'Subcategoría'}
+                  {campo.name === 'tipoProducto' && 'Tipo de Producto'}
+                  {campo.name === 'estado' && 'Estado'}
+                  {campo.placeholder}
+                </label>
+                <select id={campo.name} name={campo.name} required={campo.required}>
+                  {campo.options.map((option, idx) => (
+                    <option key={idx} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            );
+          }
+          return (
+            <div key={index} className="form-field">
+              <label htmlFor={campo.name}>
+                {campo.name === 'categoria' && 'Categoría'}
+                {campo.name === 'subcategoria' && 'Subcategoría'}
+                {campo.name === 'tipoProducto' && 'Tipo de Producto'}
+                {campo.name === 'estado' && 'Estado'}
+                {campo.placeholder}
+              </label>
               <input
+                id={campo.name}
                 type={campo.type}
                 name={campo.name}
                 placeholder={campo.placeholder}
                 required={campo.required}
               />
-            )}
-          </div>
-        ))}
-        <button type="submit">Registrar</button>
-      </form>
-    </div>
+            </div>
+          );
+        })}
+      </div>
+      <button type="submit">Enviar</button>
+    </form>
   );
 };
 
