@@ -7,6 +7,7 @@ import ListaOrdenesCompra from './ListarOrdenesCompra';
 import BuscarOrdenCompra from './BuscarOrdenCompra';
 import ModificarOrdenCompra from './ModificarOrdenCompra';
 import EliminarOrdenCompra from './EliminarOrdenCompra';
+import EstadoOrdenCompra from './EstadoOrdenCompra';
 import './OrdenCompra.css';
 
 // Importar iconos
@@ -77,9 +78,8 @@ const OrdenesCompra = () => {
             key={subaccion.accion}
             className={`subfuncion ${accion === subaccion.accion ? 'active' : ''} ${subaccion.deshabilitado ? 'disabled' : ''}`}
             onClick={() => {
-              console.log('Ícono de Eliminar Ordenes clickeado'); // eliminar
+
               if (!subaccion.deshabilitado) setAccion(subaccion.accion);
-              console.log('Acción actual:', 'eliminar'); //eliminar
             }}
           >
             <img src={subaccion.icono} alt={subaccion.accion} className="icono-subfuncion" />
@@ -170,9 +170,7 @@ const OrdenesCompra = () => {
           />
         )}
 
-        {accion === 'estado' && (
-          <p>Funcionalidad de cambiar estado en desarrollo...</p>
-        )}
+        {accion === 'estado' && <EstadoOrdenCompra />}
       </div>
     </div>
   );
